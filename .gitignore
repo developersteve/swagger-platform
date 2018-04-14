@@ -28,8 +28,9 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
+# Compiled files
 build
+dist
 
 # Dependency directories
 node_modules/
@@ -50,15 +51,15 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# Yarn Integrity file
+# Yarn
 .yarn-integrity
+yarn.lock
 
 # dotenv environment variables file
 .env
 
-dist
-
-yarn.lock
-
+# Editor configuration
 .vscode
+
+# OS Specific
 .DS_Store
