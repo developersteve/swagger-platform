@@ -11,12 +11,10 @@ class BasicNavigationState {
   @action
   public openDrawer(): void {
     this.drawerOpen = true;
-    console.log(this.drawerOpen);
   }
   @action
   public closeDrawer(): void {
     this.drawerOpen = false;
-    console.log(this.drawerOpen);
   }
 }
 
