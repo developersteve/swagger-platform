@@ -78,10 +78,6 @@ const Styled = createStyled(theme => {
       paddingRight: theme.spacing.unit,
       ...theme.mixins.toolbar
     },
-    sideBar: {
-      flexGrow: 0,
-      flexShrink: 0
-    },
     content: {
       flexBasis: '600px',
       flexGrow: 1,
@@ -154,31 +150,29 @@ export const Page: ComponentType<{}> = () => (
                 </Switch>
               </Toolbar>
             </AppBar>
-            <aside className={classes.sideBar}>
-              <nav>
-                <Drawer
-                  variant="permanent"
-                  classes={{
-                    paper: classNames(
-                      classes.navPaper,
-                      !navigationState.drawerOpen && classes.navPaperClosed
-                    )
-                  }}
-                  open={navigationState.drawerOpen}
-                >
-                  <div className={classes.toolbar}>
-                    <IconButton
-                      aria-label="Close Drawer"
-                      onClick={() => navigationState.closeDrawer()}
-                    >
-                      <Icons.ChevronLeft />
-                    </IconButton>
-                  </div>
-                  <Divider />
-                  <NavigationMenu />
-                </Drawer>
-              </nav>
-            </aside>
+            <nav>
+              <Drawer
+                variant="permanent"
+                classes={{
+                  paper: classNames(
+                    classes.navPaper,
+                    !navigationState.drawerOpen && classes.navPaperClosed
+                  )
+                }}
+                open={navigationState.drawerOpen}
+              >
+                <div className={classes.toolbar}>
+                  <IconButton
+                    aria-label="Close Drawer"
+                    onClick={() => navigationState.closeDrawer()}
+                  >
+                    <Icons.ChevronLeft />
+                  </IconButton>
+                </div>
+                <Divider />
+                <NavigationMenu />
+              </Drawer>
+            </nav>
             <main className={classes.content}>
               <div className={classes.toolbar} />
               <Switch>
