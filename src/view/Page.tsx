@@ -41,11 +41,6 @@ const Styled = createStyled(theme => ({
     })
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
     ...theme.mixins.toolbar
   },
   menuButton: {
