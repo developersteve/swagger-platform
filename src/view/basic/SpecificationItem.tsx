@@ -48,7 +48,6 @@ export interface SpecificationItemProps extends React.DOMAttributes<HTMLDivEleme
  * Very basic information about a specification.
  * For use in lists, grids, etc.
  */
-
 export const SpecificationItem: SFC<SpecificationItemProps> = ({
   specification,
   expanded,

@@ -3,14 +3,12 @@ import { Route, Switch } from 'react-router-dom';
 import { observer, Observer } from 'mobx-react';
 import classNames from 'classnames';
 import AppBar from 'material-ui/AppBar';
-import Divider from 'material-ui/Divider';
-import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import Toolbar from 'material-ui/Toolbar';
 import * as Icons from '@material-ui/icons';
 import { state as navigationState } from 'state/NavigationState';
 import { createStyled } from 'view/createStyled';
-import { NavigationMenu } from 'view/NavigationMenu';
+import { NavigationMenu, drawerWidth } from 'view/NavigationMenu';
 import { SettingsViewer } from 'view/SettingsViewer';
 import { Overview, OverviewToolbar } from 'view/Overview';
 import {
@@ -21,71 +19,49 @@ import { ProfileViewer, ProfileViewerToolbar } from 'view/ProfileViewer';
 import { NotFound, NotFoundToolbar } from 'view/basic/NotFound';
 
 // TODO: Maybe come back to this and see if we can get proper type validation going
-const Styled = createStyled(theme => {
-  const drawerWidth = theme.spacing.unit * 28;
-  return {
-    page: {
-      display: 'flex',
-      minHeight: '100vh',
-      background: theme.palette.background.default
-    },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-      })
-    },
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    },
-    toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      paddingLeft: theme.spacing.unit,
-      paddingRight: theme.spacing.unit,
-      ...theme.mixins.toolbar
-    },
-    menuButton: {
-      marginLeft: theme.spacing.unit * 1.5,
-      marginRight: theme.spacing.unit * 2.5
-    },
-    hide: {
-      display: 'none'
-    },
-    navPaper: {
-      position: 'relative',
-      overflowX: 'hidden',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen
-      })
-    },
-    navPaperClosed: {
-      width: theme.spacing.unit * 7,
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing.unit * 9
-      },
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-      })
-    },
-    content: {
-      flexBasis: '600px',
-      flexGrow: 1,
-      flexShrink: 1,
-      paddingTop: 2 * theme.spacing.unit
-    }
-  };
-});
+const Styled = createStyled(theme => ({
+  page: {
+    display: 'flex',
+    minHeight: '100vh',
+    background: theme.palette.background.default
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    ...theme.mixins.toolbar
+  },
+  menuButton: {
+    marginLeft: theme.spacing.unit * 1.5,
+    marginRight: theme.spacing.unit * 2.5
+  },
+  hide: {
+    display: 'none'
+  },
+  content: {
+    flexBasis: '600px',
+    flexGrow: 1,
+    flexShrink: 1,
+    paddingTop: 2 * theme.spacing.unit
+  }
+}));
 
 // Page routes
 const routes = [
@@ -151,27 +127,7 @@ export const Page: ComponentType<{}> = () => (
               </Toolbar>
             </AppBar>
             <nav>
-              <Drawer
-                variant="permanent"
-                classes={{
-                  paper: classNames(
-                    classes.navPaper,
-                    !navigationState.drawerOpen && classes.navPaperClosed
-                  )
-                }}
-                open={navigationState.drawerOpen}
-              >
-                <div className={classes.toolbar}>
-                  <IconButton
-                    aria-label="Close Drawer"
-                    onClick={() => navigationState.closeDrawer()}
-                  >
-                    <Icons.ChevronLeft />
-                  </IconButton>
-                </div>
-                <Divider />
-                <NavigationMenu />
-              </Drawer>
+              <NavigationMenu />
             </nav>
             <main className={classes.content}>
               <div className={classes.toolbar} />
