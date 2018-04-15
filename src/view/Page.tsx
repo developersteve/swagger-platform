@@ -40,7 +40,7 @@ const Styled = createStyled(theme => ({
       duration: theme.transitions.duration.enteringScreen
     })
   },
-  toolbar: {
+  toolbarSpacing: {
     ...theme.mixins.toolbar
   },
   menuButton: {
@@ -125,7 +125,7 @@ export const Page: ComponentType<{}> = () => (
               <NavigationMenu />
             </nav>
             <main className={classes.content}>
-              <div className={classes.toolbar} />
+              <div className={classes.toolbarSpacing} />
               <Switch>
                 {routes.map(({ path, component, exact }, i) => (
                   <Route key={i} path={path} exact={exact} component={component} />

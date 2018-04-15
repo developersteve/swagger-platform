@@ -14,7 +14,7 @@ import { createStyled } from 'view/createStyled';
 export const drawerWidth = 192;
 
 const Styled = createStyled(theme => ({
-  toolbar: {
+  drawerCloser: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -69,7 +69,7 @@ export const NavigationMenu: SFC<{}> = () => (
                 }}
                 open={navigationState.drawerOpen}
               >
-                <div className={classes.toolbar}>
+                <div className={classes.drawerCloser}>
                   <IconButton
                     aria-label="Close Drawer"
                     onClick={() => navigationState.closeDrawer()}
