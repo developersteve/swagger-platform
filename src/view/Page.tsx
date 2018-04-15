@@ -44,6 +44,14 @@ const Styled = createStyled(theme => {
         duration: theme.transitions.duration.enteringScreen
       })
     },
+    toolbar: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingLeft: theme.spacing.unit,
+      paddingRight: theme.spacing.unit,
+      ...theme.mixins.toolbar
+    },
     menuButton: {
       marginLeft: theme.spacing.unit * 1.5,
       marginRight: theme.spacing.unit * 2.5
@@ -69,14 +77,6 @@ const Styled = createStyled(theme => {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
-    },
-    toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      paddingLeft: theme.spacing.unit,
-      paddingRight: theme.spacing.unit,
-      ...theme.mixins.toolbar
     },
     content: {
       flexBasis: '600px',
