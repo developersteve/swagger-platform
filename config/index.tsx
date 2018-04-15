@@ -1,5 +1,5 @@
-import { developmentConfig } from './development';
-import { productionConfig } from './production';
+import { developmentConfig } from 'config/development';
+import { productionConfig } from 'config/production';
 
 interface Configuration {
   /**

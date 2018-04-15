@@ -1,9 +1,9 @@
 import React, { SFC } from 'react';
 import { observer } from 'mobx-react';
 import Typography from 'material-ui/Typography';
-import { SpecificationInformation } from 'basic/SpecificationInformation';
 import { state } from 'state/SpecificationState';
-import { ContentContainer } from 'basic/ContentContainer';
+import { ContentContainer } from 'view/basic/ContentContainer';
+import { SpecificationInformation } from 'view/basic/SpecificationInformation';
 
 // TODO: Fix the prop types for this
 export const SpecificationViewer: SFC<any> = observer(({ match }) => {

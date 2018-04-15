@@ -1,12 +1,12 @@
 import React, { ComponentType } from 'react';
-import { observer, Observer } from 'mobx-react';
 import { Route, Switch } from 'react-router-dom';
+import { observer, Observer } from 'mobx-react';
 import classNames from 'classnames';
 import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton';
+import Toolbar from 'material-ui/Toolbar';
 import * as Icons from '@material-ui/icons';
 import { state as navigationState } from 'state/NavigationState';
 import { createStyled } from 'view/createStyled';
@@ -18,7 +18,7 @@ import {
   SpecificationViewerToolbar
 } from 'view/SpecificationViewer';
 import { ProfileViewer, ProfileViewerToolbar } from 'view/ProfileViewer';
-import { NotFound, NotFoundToolbar } from 'basic/NotFound';
+import { NotFound, NotFoundToolbar } from 'view/basic/NotFound';
 
 // TODO: Maybe come back to this and see if we can get proper type validation going
 const Styled = createStyled(theme => {

@@ -1,9 +1,9 @@
 import React, { SFC } from 'react';
 import { observer } from 'mobx-react';
 import Typography from 'material-ui/Typography';
-import { SpecificationList } from 'basic/SpecificationList';
 import { state } from 'state/SpecificationState';
-import { ContentContainer } from 'basic/ContentContainer';
+import { ContentContainer } from 'view/basic/ContentContainer';
+import { SpecificationList } from 'view/basic/SpecificationList';
 
 /**
  * An overview of the current state of Swagger Platform.

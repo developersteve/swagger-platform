@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Grid from 'material-ui/Grid';
-import { Specification } from 'model/Specification';
-import { SpecificationItem } from 'basic/SpecificationItem';
 import Typography from 'material-ui/Typography';
+import { Specification } from 'model/Specification';
+import { SpecificationItem } from 'view/basic/SpecificationItem';
 
 export interface SpecificationListProps extends React.DOMAttributes<HTMLDivElement> {
   specifications: Specification[];
@@ -14,7 +14,6 @@ export interface SpecificationListProps extends React.DOMAttributes<HTMLDivEleme
 /**
  * Lists a series of specifications
  */
-
 export class SpecificationList extends Component<SpecificationListProps> {
   render() {
     const {

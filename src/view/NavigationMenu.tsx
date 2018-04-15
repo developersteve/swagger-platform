@@ -1,9 +1,8 @@
 import React, { SFC } from 'react';
 import { Route } from 'react-router-dom';
 import { Observer } from 'mobx-react';
-import { ListItem, ListItemIcon, ListItemText } from 'material-ui';
 import Divider from 'material-ui/Divider';
-import List from 'material-ui/List';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import * as Icons from '@material-ui/icons';
 import { state as profileState } from 'state/ProfileState';
 import { state as navigationState } from 'state/NavigationState';
