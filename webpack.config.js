@@ -54,7 +54,6 @@ module.exports = (env, argv) => {
         config: paths.config,
         view: paths.view,
         model: paths.model,
-        basic: paths.basic,
         state: paths.state,
         client: paths.client,
         backend: paths.backend,

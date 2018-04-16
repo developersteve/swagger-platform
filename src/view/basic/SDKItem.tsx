@@ -1,11 +1,11 @@
 import React, { SFC } from 'react';
-import { SDK, BuildStatus } from 'model/SDK';
-import Typography from 'material-ui/Typography';
-import { createStyled } from 'view/createStyled';
-import { BuildStatusChip } from './BuildStatusChip';
+import Button from 'material-ui/Button';
 import Grid from 'material-ui/Grid';
 import { ListItem, ListItemText } from 'material-ui/List';
-import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
+import { SDK, BuildStatus } from 'model/SDK';
+import { createStyled } from 'view/createStyled';
+import { BuildStatusChip } from 'view/basic/BuildStatusChip';
 
 const Styled: any = createStyled(theme => ({
   secondary: {
@@ -21,7 +21,6 @@ export interface SDKItemProps extends React.DOMAttributes<HTMLDivElement> {
  * Very basic information about a SDK.
  * For use in lists, grids, etc.
  */
-
 export const SDKItem: SFC<SDKItemProps> = ({ sdk }) => (
   <Styled>
     {({ classes }) => (

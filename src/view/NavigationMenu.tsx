@@ -1,65 +1,62 @@
 import React, { SFC } from 'react';
-import Drawer from 'material-ui/Drawer';
-import * as Icons from '@material-ui/icons';
-import { List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
-import { state as profileState } from 'state/ProfileState';
 import { Route } from 'react-router-dom';
-import { observable, action, autorun, computed } from 'mobx';
-import { observer, Observer } from 'mobx-react';
-import { createStyled } from 'view/createStyled';
-import Divider from 'material-ui/Divider';
+import { Observer } from 'mobx-react';
 import classNames from 'classnames';
-// TODO: Maybe come back to this and see if we can get proper type validation going
-const Styled: any = createStyled(theme => ({
+import Divider from 'material-ui/Divider';
+import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import * as Icons from '@material-ui/icons';
+import { state as profileState } from 'state/ProfileState';
+import { state as navigationState } from 'state/NavigationState';
+import { createStyled } from 'view/createStyled';
+
+export const drawerWidth = 192;
+
+const Styled = createStyled(theme => ({
+  drawerCloser: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    ...theme.mixins.toolbar
+  },
   navPaper: {
+    position: 'relative',
     overflowX: 'hidden',
-    position: 'relative'
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   navPaperClosed: {
     width: theme.spacing.unit * 7,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing.unit * 9
     },
-    transition: theme.transitions.create(['margin', 'width'], {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     })
-  },
-  navPaperOpen: {
-    width: theme.spacing.unit * 24,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    })
   }
 }));
-export interface NavigationMenuProps {}
-// TODO: In this case, it would probably be better if we didn't use the same state for all NavigationMenu components
-class NavigationState {
-  @observable public open: boolean = false;
-  @computed
-  public get actionName(): string {
-    return this.open ? 'Close' : 'Open';
-  }
-  @action
-  public toggleOpen(): void {
-    this.open = !this.open;
-  }
-}
-const navState = new NavigationState();
+
 const NavigationButton = ({ icon, primary, ...other }) => (
   <ListItem button {...other}>
     <ListItemIcon>{icon}</ListItemIcon>
     <ListItemText primary={primary} />
   </ListItem>
 );
-export const NavigationMenu: SFC<NavigationMenuProps> = () => (
+
+export const NavigationMenu: SFC<{}> = () => (
   <Styled>
     {({ classes }) => (
       <Route
         render={({ history }) => (
-          /* TODO: Unfortunately, render callbacks aren't considered with MobX's observer so we have to use the <Observer> syntax. 
-            There might be a better way. */
+          /* TODO: Unfortunately, render callbacks aren't considered with MobX's observer so we have to
+          * use the <Observer> syntax. There might be a better way. */
           <Observer>
             {() => (
               <Drawer
@@ -67,18 +64,21 @@ export const NavigationMenu: SFC<NavigationMenuProps> = () => (
                 classes={{
                   paper: classNames(
                     classes.navPaper,
-                    navState.open ? classes.navPaperOpen : classes.navPaperClosed
+                    !navigationState.drawerOpen && classes.navPaperClosed
                   )
                 }}
-                open={navState.open}
+                open={navigationState.drawerOpen}
               >
+                <div className={classes.drawerCloser}>
+                  <IconButton
+                    aria-label="Close Drawer"
+                    onClick={() => navigationState.closeDrawer()}
+                  >
+                    <Icons.ChevronLeft />
+                  </IconButton>
+                </div>
+                <Divider />
                 <List component="nav">
-                  <NavigationButton
-                    onClick={() => navState.toggleOpen()}
-                    icon={navState.open ? <Icons.ChevronLeft /> : <Icons.ChevronRight />}
-                    primary={navState.actionName}
-                  />
-                  <Divider />
                   <NavigationButton
                     onClick={() => history.push('/')}
                     icon={<Icons.Dashboard />}
