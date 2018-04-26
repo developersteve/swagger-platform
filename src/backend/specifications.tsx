@@ -135,7 +135,6 @@ export function addSdkToSpecification(id: number, sdk: Sdk): Specification | und
  * @param {Sdk} sdk - the updated sdk
  */
 export function updateSpecificationSdk(id: number, sdk: Sdk): Specification | undefined {
-  console.log('updated sdk:' + JSON.stringify(sdk));
   let spec: Specification | undefined = getSpecificationById(id);
   if (spec != undefined) {
     let i: number = 0;
@@ -146,6 +145,65 @@ export function updateSpecificationSdk(id: number, sdk: Sdk): Specification | un
       i++;
     }
     return spec;
+  } else {
+    return undefined;
+  }
+}
+
+/** Change the attributes of a specification
+ * @param {number} id - id of the specification to change
+ * @param {string | undefined} newTitle - a new title to update to
+ * @param {string | undefined} newUrl  - a new url/path
+ * @param {string | undefined} newDescription - a new description
+ * @returns {Specification | undefined} - returns the updated specification, or undefined if it didnt exist
+ */
+export function setSpecificationAttributes(
+  id: number,
+  newTitle: string | undefined,
+  newUrl: string | undefined,
+  newDescription: string | undefined
+): Specification | undefined {
+  let spec: Specification | undefined = getSpecificationById(id);
+  if (spec != undefined) {
+    let finalTitle: string;
+    let finalUrl: string;
+    let finalDescription: string | undefined;
+    // find title value to use
+    if (newTitle != undefined) {
+      finalTitle = newTitle;
+    } else {
+      finalTitle = spec.title;
+    }
+    //find url value to use
+    if (newUrl != undefined) {
+      finalUrl = newUrl;
+    } else {
+      finalUrl = spec.path;
+    }
+    //find description value to use
+    if (newDescription != undefined) {
+      finalDescription = newDescription;
+    } else {
+      finalDescription = spec.description;
+    }
+    //build the new Specification
+    const newSpec: Specification = {
+      id: spec.id,
+      title: finalTitle,
+      path: finalUrl,
+      description: finalDescription,
+      sdks: spec.sdks
+    };
+    // find old specification place in list
+    let i: number = 0;
+    while (i < specifications.length) {
+      if (specifications[i].id === id) {
+        specifications[i] = newSpec; //replace the old specification
+        break;
+      }
+      i++;
+    }
+    return newSpec;
   } else {
     return undefined;
   }

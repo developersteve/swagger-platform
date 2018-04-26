@@ -10,7 +10,8 @@ import {
   getSpecifications,
   addSpecification,
   addSdkToSpecification,
-  updateSpecificationSdk
+  updateSpecificationSdk,
+  setSpecificationAttributes
 } from 'backend/specifications';
 
 async function run(port: number) {
@@ -110,6 +111,36 @@ async function run(port: number) {
       });
     }
     res.json({ status: 'failure' });
+  });
+
+  /** API Method to change the title and URL of a specification
+   * @param {number} req.body.id - the id of the specification that is being changed
+   * @param {string | undefined} req.body.title - a new title for the specification
+   * @param {string | undefined} req.body.url - a new url for the specification
+   * @param {string | undefined} req.body.description - a new description for the specification
+   * @returns {Specification} - the updated specification
+   */
+  app.post('/updatespecification', async (req, res) => {
+    const id: number = req.body.id;
+    const title: string | undefined = req.body.title;
+    const url: string | undefined = req.body.url;
+    const description: string | undefined = req.body.description;
+    let spec: Specification | undefined = setSpecificationAttributes(
+      id,
+      title,
+      url,
+      description
+    );
+    if (spec != undefined) {
+      res.json({
+        status: 'success',
+        specification: spec
+      });
+    } else {
+      res.json({
+        status: 'failure'
+      });
+    }
   });
 
   app.listen(port);
