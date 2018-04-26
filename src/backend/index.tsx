@@ -4,10 +4,12 @@ import cors from 'cors';
 import { config } from 'config';
 import { generateSdk } from 'client/sdkGeneration';
 import { Specification } from 'model/Specification';
+import { Sdk } from 'model/Sdk';
 import {
   getSpecificationById,
   getSpecifications,
-  addSpecification
+  addSpecification,
+  addSdkToSpecification
 } from 'backend/specifications';
 
 async function run(port: number) {
@@ -27,7 +29,7 @@ async function run(port: number) {
   });
 
   /** API method to generate an sdk for a given specification
-   * @param {string} req.body.id - ID of the specification to generate the SDK for
+   * @param {number} req.body.id - ID of the specification to generate the SDK for
    * @return {Promise<string>} - The URL that the SDK can be downloaded from
    */
   app.post('/generatesdk', async (req, res) => {
@@ -71,6 +73,17 @@ async function run(port: number) {
    */
   app.post('/getspecifications', async (req, res) => {
     res.json(getSpecifications());
+  });
+
+  /** API Method to add an SDK to a Specification
+   * @param {number} req.body.id - the id of the specification
+   * @param {Sdk} req.body.sdk - the sdk to add to the specification
+   * @return {Promise<Specification | undefined>} - the updated specification, or undefined if an invalid id was supplied
+   */
+  app.post('/addsdktospecification', async (req, res) => {
+    const id: number = req.body.id;
+    const sdk: Sdk = req.body.sdk;
+    res.json(addSdkToSpecification(id, sdk));
   });
 
   app.listen(port);

@@ -1,8 +1,7 @@
 import { Specification } from 'model/Specification';
-import { BuildStatus } from 'model/Sdk';
+import { BuildStatus, Sdk } from 'model/Sdk';
 
 // TODO: Replace this list
-let count = 0;
 const specifications: Specification[] = [
   {
     id: 0,
@@ -47,6 +46,7 @@ const specifications: Specification[] = [
     ]
   }
 ];
+let count = specifications.length;
 
 /** Gets a specification with a matching id to what is provided
  * @param {number} id - the id of the specification to fetch
@@ -96,4 +96,37 @@ export function addSpecification(
   specifications.push(spec);
   count++;
   return spec;
+}
+
+/**
+ * Adds an SDK to a specification
+ * @param {number} id - the ID of the specification of which to add the SDK
+ * @param {Sdk} sdk - the SDK to add to the specification
+ * @return {Specification | undefined} - returns the updated specification, or undefined if the specification does not exist
+ */
+export function addSdkToSpecification(id: number, sdk: Sdk): Specification | undefined {
+  let currentspec: Specification | undefined = getSpecificationById(id);
+
+  if (currentspec != undefined) {
+    let sdks: Sdk[] = currentspec.sdks;
+    // create an array of the current SDK's ID's
+    const ids: number[] = [];
+    for (let sdki of sdks) {
+      ids.push(sdki.id);
+    }
+    // find a free id to use
+    let i: number = 1;
+    while (true) {
+      if (!ids.includes(i)) {
+        break;
+      }
+      i++;
+    }
+    //change sdk id and add to specification
+    sdk.id = i;
+    currentspec.sdks.push(sdk);
+    return currentspec;
+  } else {
+    return undefined;
+  }
 }
