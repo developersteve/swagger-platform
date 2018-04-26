@@ -78,13 +78,26 @@ async function run(port: number) {
   /** API Method to add an SDK to a Specification
    * @param {number} req.body.id - the id of the specification
    * @param {Sdk} req.body.sdk - the sdk to add to the specification
-   * @return {Promise<Specification | undefined>} - the updated specification, or undefined if an invalid id was supplied
+   * @return {Promise<Specification>} - the updated specification
    */
   app.post('/addsdktospecification', async (req, res) => {
     const id: number = req.body.id;
     const sdk: Sdk = req.body.sdk;
-    res.json(addSdkToSpecification(id, sdk));
+    const updatedSpec: Specification | undefined = addSdkToSpecification(id, sdk);
+    if (updatedSpec != undefined) {
+      res.json({
+        status: 'success',
+        specification: updatedSpec
+      });
+    }
+    res.json({ status: 'failure' });
   });
+
+  /** API Method to edit an existing SDK config in a specification
+   * @param {number} req.body.specId - the id of the specification that owns the sdk
+   * @param {number} req.body.sdkId - the id of the specification to update
+   * @param {Sdk} req.body.newSdk
+   */
 
   app.listen(port);
 }
