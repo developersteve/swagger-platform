@@ -9,7 +9,8 @@ import {
   getSpecificationById,
   getSpecifications,
   addSpecification,
-  addSdkToSpecification
+  addSdkToSpecification,
+  updateSpecificationSdk
 } from 'backend/specifications';
 
 async function run(port: number) {
@@ -95,9 +96,21 @@ async function run(port: number) {
 
   /** API Method to edit an existing SDK config in a specification
    * @param {number} req.body.specId - the id of the specification that owns the sdk
-   * @param {number} req.body.sdkId - the id of the specification to update
-   * @param {Sdk} req.body.newSdk
+   * @param {Sdk} req.body.newSdk - the updated SDK, id should not be changed
+   * @return {Specification} - the updated specification
    */
+  app.post('/updatespecificationsdk', async (req, res) => {
+    const id: number = req.body.id;
+    const sdk: Sdk = req.body.sdk;
+    const updatedSpec: Specification | undefined = updateSpecificationSdk(id, sdk);
+    if (updatedSpec != undefined) {
+      res.json({
+        status: 'success',
+        specification: updatedSpec
+      });
+    }
+    res.json({ status: 'failure' });
+  });
 
   app.listen(port);
 }

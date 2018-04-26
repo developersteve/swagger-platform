@@ -98,8 +98,7 @@ export function addSpecification(
   return spec;
 }
 
-/**
- * Adds an SDK to a specification
+/** Adds an SDK to a specification
  * @param {number} id - the ID of the specification of which to add the SDK
  * @param {Sdk} sdk - the SDK to add to the specification
  * @return {Specification | undefined} - returns the updated specification, or undefined if the specification does not exist
@@ -126,6 +125,27 @@ export function addSdkToSpecification(id: number, sdk: Sdk): Specification | und
     sdk.id = i;
     currentspec.sdks.push(sdk);
     return currentspec;
+  } else {
+    return undefined;
+  }
+}
+
+/** Update an SDK in a specification
+ * @param {number} id - the ID of the specification that contains the SDK
+ * @param {Sdk} sdk - the updated sdk
+ */
+export function updateSpecificationSdk(id: number, sdk: Sdk): Specification | undefined {
+  console.log('updated sdk:' + JSON.stringify(sdk));
+  let spec: Specification | undefined = getSpecificationById(id);
+  if (spec != undefined) {
+    let i: number = 0;
+    while (i < spec.sdks.length) {
+      if (spec.sdks[i].id === sdk.id) {
+        spec.sdks[i] = sdk; //replace the existing sdk if the ID's match
+      }
+      i++;
+    }
+    return spec;
   } else {
     return undefined;
   }
