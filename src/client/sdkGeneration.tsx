@@ -15,7 +15,7 @@ const SWAGGER_CODEGEN_ENDPOINT = 'http://generator.swagger.io/api/gen/clients/';
 export async function generateSdk(
   logger,
   spec: HasId<Spec>,
-  plan: HasId<Plan>,
+  plan: HasId<Plan>
 ): Promise<Sdk> {
   const body = { swaggerUrl: spec.path, options: plan.options };
   const response = await fetch(SWAGGER_CODEGEN_ENDPOINT + plan.target, {
