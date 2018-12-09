@@ -1,0 +1,12 @@
+{
+  "name": "@openapi-platform/server-cli",
+  "version": "1.0.0-alpha.0",
+  "main": "./lib/index.js",
+  "types": "./src/index.ts",
+  "license": "Apache-2",
+  "private": false,
+  "dependencies": {
+    "@types/commander": "^2.12.2",
+    "commander": "^2.19.0"
+  }
+}
