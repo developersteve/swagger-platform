@@ -22,7 +22,7 @@ const Styled: any = createStyled(theme => ({
   },
 }));
 
-export class DeleteSpecModal extends Component<RouteComponentProps<{ specId: string }>> {
+export class DeleteSpecModal extends Component<RouteComponentProps<{ id: string }>> {
   /**
    * Whether or not a progress indicator should be shown
    */
@@ -40,7 +40,9 @@ export class DeleteSpecModal extends Component<RouteComponentProps<{ specId: str
   };
 
   private closeModalOnDelete = () => {
-    this.props.history.push(goUpUrl(this.props.match.url, 2));
+    this.props.history.push(
+      goUpUrl(this.props.match.url.replace('specs', 'overview'), 2),
+    );
   };
 
   private closeErrorModal = () => {
@@ -54,7 +56,7 @@ export class DeleteSpecModal extends Component<RouteComponentProps<{ specId: str
   private onDeleteSpec = async () => {
     this.showProgressIndicator = true;
     try {
-      await specState.deleteSpec(parseInt(this.props.match.params.specId, 10));
+      await specState.deleteSpec(parseInt(this.props.match.params.id, 10));
       this.closeModalOnDelete();
     } catch (e) {
       console.error(e);
@@ -67,7 +69,7 @@ export class DeleteSpecModal extends Component<RouteComponentProps<{ specId: str
   public render() {
     const {
       match: {
-        params: { specId },
+        params: { id },
       },
     } = this.props;
     return (
@@ -81,8 +83,8 @@ export class DeleteSpecModal extends Component<RouteComponentProps<{ specId: str
                   <DialogContent>
                     <DialogContentText>
                       Are you sure you want to delete the{' '}
-                      {specId && specState.entities.has(parseInt(specId, 10))
-                        ? specState.entities.get(parseInt(specId, 10))!.title
+                      {id && specState.entities.has(parseInt(id, 10))
+                        ? specState.entities.get(parseInt(id, 10))!.title
                         : ''}{' '}
                       specification?
                     </DialogContentText>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import {
   Button,
-  IconButton,
   Typography,
   List,
   ListItem,
@@ -11,14 +10,14 @@ import {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   ExpansionPanelActions,
-  Divider,
   Table,
   TableBody,
+  Divider,
 } from '@material-ui/core';
 import * as Icons from '@material-ui/icons';
 import classNames from 'classnames';
 
-import { HasId, SdkConfig, Spec } from '@openapi-platform/model';
+import { HasId, SdkConfig, Spec, Id } from '@openapi-platform/model';
 import { state as sdkConfigState } from '../../state/SdkConfigState';
 import { state as sdkState } from '../../state/SdkState';
 import { createStyled } from '../createStyled';
@@ -42,6 +41,9 @@ const Styled: any = createStyled(theme => ({
     minWidth: 0,
     flexBasis: '220px',
   },
+  summaryTitleExpanded: {
+    minWidth: 0,
+  },
   summaryDescription: {
     minWidth: 0,
     flexBasis: '100px',
@@ -57,18 +59,20 @@ const Styled: any = createStyled(theme => ({
     flexShrink: 0,
     minWidth: 0,
     alignItems: 'center',
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
   },
   sdkTitleSection: {
     flexGrow: 1,
     flexShrink: 0,
   },
-  sdkHeaderActions: {
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
   sdkList: {
     borderCollapse: 'separate',
     padding: [theme.spacing.unit / 2, 0],
+  },
+  placeholder: {
+    color: theme.palette.text.secondary,
+    textAlign: 'center',
   },
 }));
 
@@ -76,11 +80,8 @@ export interface SpecItemProps extends React.DOMAttributes<HTMLDivElement> {
   spec: HasId<Spec>;
   expanded: boolean;
   onPanelChange: (event: any, expanded: boolean) => void;
-  onEditSpec: (spec: HasId<Spec>) => void;
-  onDeleteSpec: (spec: HasId<Spec>) => void;
-  onAddSdkConfig: (spec: HasId<Spec>) => void;
+  onSpecOpen: (id: Id) => void;
   sdkConfigs?: Array<HasId<SdkConfig>>;
-  onEditSdkConfig: (sdkConfig: HasId<SdkConfig>) => void;
 }
 
 /**
@@ -90,12 +91,7 @@ export interface SpecItemProps extends React.DOMAttributes<HTMLDivElement> {
 export class SpecItem extends Component<SpecItemProps> {
   private onChange = (event, expanded) =>
     this.props.onPanelChange(this.props.spec, expanded);
-
-  private onEditSpec = () => this.props.onEditSpec(this.props.spec);
-
-  private onDeleteSpec = () => this.props.onDeleteSpec(this.props.spec);
-
-  private onAddSdkConfig = () => this.props.onAddSdkConfig(this.props.spec);
+  private specOpen = () => this.props.onSpecOpen(this.props.spec.id);
 
   /**
    * Runs all SDK config plans
@@ -113,7 +109,7 @@ export class SpecItem extends Component<SpecItemProps> {
   };
 
   public render() {
-    const { spec, expanded, sdkConfigs = [], onEditSdkConfig } = this.props;
+    const { spec, expanded, sdkConfigs } = this.props;
     return (
       <Styled>
         {({ classes }) => (
@@ -122,7 +118,9 @@ export class SpecItem extends Component<SpecItemProps> {
               classes={{ content: classes.summarySection }}
               expandIcon={expanded ? <Icons.Close /> : <Icons.InfoOutlined />}
             >
-              <div className={classes.summaryTitle}>
+              <div
+                className={expanded ? classes.summaryTitleExpanded : classes.summaryTitle}
+              >
                 <Typography noWrap variant={expanded ? 'title' : 'body1'}>
                   {spec.title}
                 </Typography>
@@ -135,7 +133,9 @@ export class SpecItem extends Component<SpecItemProps> {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <div className={classes.detailSection}>
-                <Typography className={classes.indent}>{spec.description}</Typography>
+                <Typography className={classes.indent} gutterBottom>
+                  {spec.description}
+                </Typography>
                 <Typography variant="subheading" gutterBottom className={classes.indent}>
                   Specification File
                 </Typography>
@@ -150,43 +150,35 @@ export class SpecItem extends Component<SpecItemProps> {
                       SDK Configurations
                     </Typography>
                   </div>
-                  <div className={classes.sdkHeaderActions}>
-                    <Button
-                      variant="flat"
-                      color="primary"
-                      size="small"
+                  {sdkConfigs ? (
+                    <Button variant="flat" color="primary" size="small"
                       onClick={this.runAll}
                     >
                       Run all
                     </Button>
-                    <IconButton
-                      aria-label="Add SDK Configuration"
-                      onClick={this.onAddSdkConfig}
-                    >
-                      <Icons.Add />
-                    </IconButton>
-                  </div>
+                  ) : null}
                 </div>
-                <Table classes={{ root: classNames(classes.sdkList, classes.bordered) }}>
-                  <TableBody>
-                    {sdkConfigs.map(sdkConfig => (
-                      <SdkConfigItem
-                        key={sdkConfig.id}
-                        sdkConfig={sdkConfig}
-                        onEditSdkConfig={onEditSdkConfig}
-                      />
-                    ))}
-                  </TableBody>
-                </Table>
+                {sdkConfigs ? (
+                  <Table
+                    classes={{ root: classNames(classes.sdkList, classes.bordered) }}
+                  >
+                    <TableBody>
+                      {sdkConfigs.map(sdkConfig => (
+                        <SdkConfigItem key={sdkConfig.id} sdkConfig={sdkConfig} />
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <Typography variant="body2" className={classes.placeholder}>
+                    No SDK Configurations
+                  </Typography>
+                )}
               </div>
             </ExpansionPanelDetails>
             <Divider />
             <ExpansionPanelActions>
-              <Button size="small" color="secondary" onClick={this.onDeleteSpec}>
-                Delete
-              </Button>
-              <Button size="small" color="primary" onClick={this.onEditSpec}>
-                Edit
+              <Button color="primary" onClick={this.specOpen}>
+                Open
               </Button>
             </ExpansionPanelActions>
           </ExpansionPanel>

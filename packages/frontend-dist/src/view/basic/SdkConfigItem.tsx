@@ -43,7 +43,7 @@ const Styled: any = createStyled(theme => ({
 
 export interface SdkConfigItemProps extends React.DOMAttributes<HTMLDivElement> {
   sdkConfig: HasId<SdkConfig>;
-  onEditSdkConfig: (sdkConfig: HasId<SdkConfig>) => void;
+  onEditSdkConfig?: (sdkConfig: HasId<SdkConfig>) => void;
 }
 
 /**
@@ -108,9 +108,8 @@ export class SdkConfigItem extends Component<SdkConfigItemProps> {
     this.forceBuilding = false;
   };
 
-  private onEditSdkConfig = () => {
-    this.props.onEditSdkConfig(this.props.sdkConfig);
-  };
+  private onEditSdkConfig = () =>
+    this.props.onEditSdkConfig && this.props.onEditSdkConfig(this.props.sdkConfig);
 
   public render() {
     const { sdkConfig } = this.props;
@@ -156,6 +155,11 @@ export class SdkConfigItem extends Component<SdkConfigItemProps> {
                     >
                       {isRunning(this.displayedBuildStatus) ? 'Running...' : 'Run'}
                     </Button>
+                    {this.props.onEditSdkConfig ? (
+                      <IconButton aria-label="Edit" onClick={this.onEditSdkConfig}>
+                        <Icons.Edit />
+                      </IconButton>
+                    ) : null}
                   </div>
                 </TableCell>
               </TableRow>
